@@ -1,5 +1,7 @@
-from slot_booking.models.Slot import Slot
-__all__ = ["Slot"]
+from slot_booking.models.Slot import Slot, UserSlot, WashingMachine
+__all__ = ["Slot",
+           "UserSlot",
+           "WashingMachine"]
 
 # class DummyModel(AbstractDateTimeModel):
 #     """

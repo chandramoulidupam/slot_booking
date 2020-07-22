@@ -11,7 +11,7 @@ class AuthService:
         return ServiceInterface()
 
     def get_user_dtos(self, username: str):
-        user_dto = self.interface.get_user_dtos(username=username)
+        user_dto = self.interface.user_is_admin(username=username)
 
         user_details_dtos = UserDto(
                 name=user_dto.name,

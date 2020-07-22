@@ -15,6 +15,8 @@
 #     #         IBUsersServiceAdapter
 #     #     return IBUsersServiceAdapter(access_token=self.access_token,
 #     #                                  user=self.user, source=self.source)
+from slot_booking.adapters.is_user_admin_adopter import ValidateAdmin
+
 
 class ServiceAdapter:
 
@@ -22,6 +24,11 @@ class ServiceAdapter:
     def auth_service(self):
         from .auth_service import AuthService
         return AuthService()
+
+    @property
+    def is_user_admin_adopter(self):
+            # from .is_user_admin_adopter import ValidateAdmin
+        return ValidateAdmin()
 
 
 def get_service_adapter():
