@@ -1,0 +1,2 @@
+class InvalidWashingMachineNumber(Exception):
+    pass

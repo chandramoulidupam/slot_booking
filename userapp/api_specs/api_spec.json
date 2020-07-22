@@ -1,0 +1,266 @@
+{
+  "swagger": "2.0",
+  "host": "localhost:8080",
+  "basePath": "/api/slot_booking/",
+  "info": {
+    "version": "1.0.0",
+    "title": "UserAPI",
+    "description": "A simple API to learn how to write OpenAPI Specification"
+  },
+  "schemes": [
+    "http", "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "securityDefinitions": {
+    "oauth": {
+      "tokenUrl": "http://localhost:8080/token",
+      "flow": "password",
+      "scopes": {
+        "read": "read users",
+        "write": "create users",
+        "update": "update users",
+        "delete": "delete users",
+        "superuser": "super user permission"
+      },
+      "type": "oauth2"
+    }
+  },
+  "security": [],
+  "definitions": {
+      "User": {
+      "type": "object",
+      "properties": {
+        "user_id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "name": {
+          "type": "string"
+        },
+        "profile_pic_url": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "user_id",
+        "name",
+        "profile_pic_url"
+      ]
+    }
+  },
+  "parameters": {
+    "ValidateUserCredentials": {
+      "name": "login",
+      "in": "body",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ValidateUserInputs": {
+      "name": "signup",
+      "in": "body",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "UserIdParameter":{
+        "name": "user_id",
+        "in": "path",
+        "required": true,
+        "description": "for user profile",
+        "type": "integer"
+    },
+    "UserProfileInput": {
+      "name": "login",
+      "in": "body",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "responses": {
+    "LoginFailedResponse": {
+      "description": "Login failed due to Invalid credentails Response",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "response": {
+            "type": "string"
+          },
+          "http_status_code": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "res_status": {
+            "type": "string",
+            "enum": [
+              "INVALID_CREDENTAILS"
+            ]
+          }
+        },
+        "required": [
+          "response",
+          "http_status_code",
+          "res_status"
+        ]
+      }
+    },
+    "LoginFailedDueToInvalidInputsResponse": {
+      "description": "Login Failure due to invalid inputs Response",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "response": {
+            "type": "string"
+          },
+          "http_status_code": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "res_status": {
+            "type": "string",
+            "enum": [
+              "INVALID_USERNAME",
+              "INVALID_PASSWORD"
+            ]
+          }
+        },
+        "required": [
+          "response",
+          "http_status_code",
+          "res_status"
+        ]
+      }
+    },
+    "LoginSuccesful": {
+      "description": "Validate username and password returns homepage",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "acces_token": {
+            "type": "string"
+          },
+          "refresh_token": {
+            "type": "string"
+          },
+          "is_admin": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "SignupSuccesful": {
+      "description": "Validate username, password and confirm password returns user homepage",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "acces_token": {
+            "type": "string"
+          },
+          "refresh_token": {
+            "type": "string"
+          },
+          "is_admin": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "UserProfile": {
+      "description": "User details",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "user_profile": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        }
+      }
+    }
+  },
+  "paths": {
+    "/user/login/v1/": {
+      "post": {
+        "operationId": "user_login",
+        "summary": "login page for users",
+        "parameters": [{
+          "$ref": "#/parameters/ValidateUserCredentials"
+        }],
+        "responses": {
+          "201": {
+            "$ref": "#/responses/LoginSuccesful"
+          },
+          "403": {
+            "$ref": "#/responses/LoginFailedResponse"
+          },
+          "404": {
+            "$ref": "#/responses/LoginFailedDueToInvalidInputsResponse"
+          }
+        }
+      }
+    },
+    "/user/signup/v1/": {
+      "post": {
+        "operationId": "user_signup",
+        "summary": "sign-up page for users",
+        "parameters": [{
+          "$ref": "#/parameters/ValidateUserInputs"
+        }],
+        "responses": {
+          "201": {
+            "$ref": "#/responses/SignupSuccesful"
+          }
+        }
+      }
+    },
+    "/user/profile/v1/":{
+      "get": {
+        "operationId": "get_user_profile",
+        "summary": "get user details",
+        "description": "get user details",
+        "security": [{
+          "oauth": ["read"]
+        }],
+        "parameters": [
+          {
+            "$ref": "#/parameters/UserProfileInput"
+          }
+        ],
+        "responses":{
+          "200":{
+            "$ref": "#/responses/UserProfile"
+          }
+        }
+      }
+    }
+  }
+}
