@@ -18,3 +18,15 @@ NO_SLOTS_ARE_AVILABLE = (
     "no slots are avilable",
     "NO_SLOTS_ARE_AVILABLE"
 )
+INVALID_WASHING_MACHINE_ID = (
+    "Invalid washing machine Id",
+    "INVALID_WASHING_MACHINE_ID"
+)
+DAY_INVALID = (
+    "day is invalid",
+    "DAY_INVALID"
+)
+USER_IS_ADMIN = (
+    "user is admin",
+    "USER_IS_ADMIN"
+)

@@ -24,7 +24,7 @@ class TestUserLoginInteractor:
         presenter = create_autospec(PresenterInterface)
         oauth_storage = create_autospec(OAuth2SQLStorage)
         storage.validate_username.return_value = False
-        presenter.raise_exception_for_invalid_username.side_effect = InvalidUsername
+        # presenter.raise_exception_for_invalid_username.side_effect = InvalidUsername
         interactor = LoginInteractor(
             storage=storage,
             oauth_storage=oauth_storage)

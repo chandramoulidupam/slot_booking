@@ -10,7 +10,7 @@ class UpcomingSlotsInteractor:
     def __init__(self, storage: StorageInterface):
         self.storage = storage
 
-    def upcoming_slots_wrapper(self, username:str, date: str, presenter: PresenterInterface):
+    def upcoming_slots_wrapper(self, username: str, date: str, presenter: PresenterInterface):
         try:
             return self.upcoming_slots_response(date, username, presenter)
         except UserIsAdmin:
@@ -18,7 +18,7 @@ class UpcomingSlotsInteractor:
 
     def upcoming_slots_response(self, date, username, presenter):
         list_of_slot_dtos = self.upcoming_slots(date, username)
-        return  presenter.list_of_upcoming_slots(list_of_slot_dtos)
+        return presenter.list_of_upcoming_slots(list_of_slot_dtos)
 
     def upcoming_slots(self, date, username):
         service_adapter = get_service_adapter()
@@ -29,4 +29,4 @@ class UpcomingSlotsInteractor:
         if is_user_admin:
             raise UserIsAdmin
         upcoming_slots_dtos = self.storage.list_of_upcoming_slot_dtos(date, username)
-        return  upcoming_slots_dtos
+        return upcoming_slots_dtos

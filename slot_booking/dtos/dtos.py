@@ -8,13 +8,13 @@ from slot_booking.constants.enums import SlotStatus
 class SlotDto:
     slot_start_time: datetime
     slot_end_time: datetime
-    slot_date: datetime
-    washing_machine_id: int
-    slot_status: SlotStatus
+    slot_day: datetime
+    washing_machine_id: str
 
 @dataclass
 class WashingMachineDto:
-    washing_machine_number: str
+    washing_machine_id: str
+    washing_machine_status: str
 
 @dataclass
 class BookSlotDto:
@@ -28,4 +28,4 @@ class UserSlotDto:
     slot_date: datetime
     slot_start_time: datetime.time
     slot_end_time: datetime.time
-    washing_machine_number: str
+    washing_machine_id: str

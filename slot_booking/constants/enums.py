@@ -9,5 +9,18 @@ class SlotStatus(BaseEnumClass, enum.Enum):
 
 
 class BookedStatus(BaseEnumClass, enum.Enum):
-    Booked = "Booked"
-    NotBooked = "NotBooked"
+    BOOKED = "BOOKED"
+    NOTBOOKED = "NOTBOOKED"
+
+class WashingMachineStatus(BaseEnumClass, enum.Enum):
+    ACTIVE = "ACTIVE"
+    INACTIVE = "INACTIVE"
+
+class SlotDays(BaseEnumClass, enum.Enum):
+    SUNDAY = "SUNDAY"
+    MONDAY = "MONDAY"
+    TUESDAY = "TUESDAY"
+    WEDNESDAY = "WEDNESDAY"
+    THURSDAY = "THURSDAY"
+    FRIDAY = "FRIDAY"
+    SATURDAY = "SATURDAY"

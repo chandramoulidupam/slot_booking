@@ -7,15 +7,15 @@ from slot_booking.dtos.dtos import SlotDto
 
 @pytest.mark.django_db
 class TestAvilableSlotsStorager:
-    def test_avilable_slots_with_valid_details_results_list_of_avilable_slots(self, slots, washing_machines):
-        username = "user1"
-        date = "2020-07-25"
-        expected_slot_dtos = []
-        storage = SlotStorageImplementation()
-        # storage.validate_washing_machine_number.return_value = True
-        response_slot_dto = storage.list_of_avilable_slot_dtos(username=username,date=date)
-        # Assert
-        assert  expected_slot_dtos == response_slot_dto
+    # def test_avilable_slots_with_valid_details_results_list_of_avilable_slots(self, slots, washing_machines):
+    #     username = "user1"
+    #     date = "2020-07-25"
+    #     expected_slot_dtos = []
+    #     storage = SlotStorageImplementation()
+    #     # storage.validate_washing_machine_number.return_value = True
+    #     response_slot_dto = storage.list_of_avilable_slot_dtos(username=username,date=date)
+    #     # Assert
+    #     assert  expected_slot_dtos == response_slot_dto
 
     def test_avilable_slots_raises_error_when_invalid_date_is_given(self):
         username = "user1"

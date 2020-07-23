@@ -1,7 +1,7 @@
 import datetime
 
 from slot_booking.adapters.service_adapter import get_service_adapter
-from slot_booking.constants.custom_exceptions import UserIsAdmin, DateInvalid, NoSlotsAreAvilable
+from slot_booking.constants.custom_exceptions import UserIsAdmin, DateInvalid
 from slot_booking.interactors.storages.storage_interface import StorageInterface
 from slot_booking.interactors.presenters.presenter_interface \
         import PresenterInterface
@@ -34,6 +34,6 @@ class AvilableSlotsInteractor:
         date_is_not_valid = not date_is_valid
         if date_is_not_valid:
             raise DateInvalid
-        date = datetime.datetime.strptime(date, "%d-%m-%Y").date()
+        # date = datetime.datetime.strptime(date, "%d-%m-%Y").date()
         avilable_slots_dtos = self.storage.list_of_avilable_slot_dtos(username, date)
         return avilable_slots_dtos

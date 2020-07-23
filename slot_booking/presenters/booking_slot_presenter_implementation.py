@@ -2,7 +2,8 @@ from slot_booking.constants.exception_messages import USER_CANNOT_BOOK_A_SLOT
 from slot_booking.interactors.presenters.presenter_interface import PresenterInterface
 import json
 
-from django.http import HttpResponse, response
+from django.http import response
+
 
 class SlotBookingPresenterImplementation(PresenterInterface):
     def get_booked_slot_details(self, booked_slot_dto):
@@ -26,4 +27,28 @@ class SlotBookingPresenterImplementation(PresenterInterface):
         return response_object
 
     def list_of_avilable_slots(self, list_of_slot_dtos):
+        pass
+
+    def get_added_washing_machine_details(self, washing_machine_dto):
+        pass
+
+    def raise_exception_for_invalid_washing_machine_id(self):
+        pass
+
+    def list_of_upcoming_slots(self, list_of_slot_dtos):
+        pass
+
+    def raise_exception_for_user_is_admin(self):
+        pass
+
+    def list_of_previous_slots(self, list_of_slot_dtos):
+        pass
+
+    def raise_exception_for_invalid_date(self):
+        pass
+
+    def raise_exception_for_no_slots_avilable_to_user(self):
+        pass
+
+    def get_washing_machine_details(self, washing_machine_details_dto):
         pass
