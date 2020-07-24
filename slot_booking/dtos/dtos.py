@@ -25,7 +25,14 @@ class BookSlotDto:
 
 @dataclass
 class UserSlotDto:
-    slot_date: datetime
+    user_slot_date: datetime
+    user_slot_start_time: datetime.time
+    user_slot_end_time: datetime.time
+    washing_machine_id: str
+
+@dataclass
+class UpdateSlotInputDto:
+    slot_day: datetime
     slot_start_time: datetime.time
     slot_end_time: datetime.time
     washing_machine_id: str

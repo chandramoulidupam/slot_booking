@@ -30,3 +30,7 @@ class DayIsInvalid(Exception):
 
 class UserIsNotAdmin(Exception):
     pass
+
+
+class InvalidInputsGiven(Exception):
+    pass

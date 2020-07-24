@@ -30,3 +30,7 @@ USER_IS_ADMIN = (
     "user is admin",
     "USER_IS_ADMIN"
 )
+INVALID_INPUTS_ARE_GIVEN = (
+    "check your inputs"
+    "INVALID_INPUTS_ARE_GIVEN"
+)

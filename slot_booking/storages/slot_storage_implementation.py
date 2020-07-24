@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from slot_booking.interactors.storages.storage_interface import StorageInterface
-from slot_booking.models.Slot import Slot
+from slot_booking.models.Slot import Slot, WashingMachine
 from slot_booking.dtos.dtos import SlotDto, UserSlotDto
 
 
@@ -20,19 +20,20 @@ class SlotStorageImplementation(StorageInterface):
 
     def get_each_slot_dto(self, each_slot_obj):
         each_slot_dto = SlotDto(
-            slot_start_time=each_slot_obj.slot_start_time,
-            slot_end_time=each_slot_obj.slot_end_time,
+            slot_start_time=(each_slot_obj.slot_start_time),
+            slot_end_time=(each_slot_obj.slot_end_time),
             slot_day=each_slot_obj.slot_day,
-            washing_machine_id=each_slot_obj.washing_machine_id,
+            washing_machine_id=each_slot_obj.washing_machine_id_id,
         )
         return each_slot_dto
 
     def get_each_user_slot_dto(self, each_slot_obj):
+        # print("\n"*5, each_slot_obj.user_slot_start_time)
         each_user_slot_dto = UserSlotDto(
-            slot_start_time=each_slot_obj.user_slot_start_time,
-            slot_end_time=each_slot_obj.user_slot_end_time,
-            slot_date=each_slot_obj.user_slot_end_time,
-            washing_machine_id=each_slot_obj.user_washing_machine_id
+            user_slot_start_time=each_slot_obj.user_slot_start_time,
+            user_slot_end_time=each_slot_obj.user_slot_end_time,
+            user_slot_date=each_slot_obj.user_slot_date,
+            washing_machine_id=each_slot_obj.washing_machine_id_id
         )
         return each_user_slot_dto
 
@@ -64,11 +65,13 @@ class SlotStorageImplementation(StorageInterface):
         return list_of_slot_dtos
 
     def allocated_slot_dtos(self, washing_machine_id, day):
-        allocated_slot_objs= Slot.objects.filter(day=day).filter(washing_machine_id_id=washing_machine_id)
+        # print("*8888888888888888*", washing_machine_id)
+        allocated_slot_objs= Slot.objects.filter(slot_day=day).filter(washing_machine_id_id=washing_machine_id)
         allocate_slot_dtos = []
         for each_slot_obj in allocated_slot_objs:
             each_slot_dto = self.get_each_slot_dto(each_slot_obj)
             allocate_slot_dtos.append(each_slot_dto)
+        # print("*************************", allocate_slot_dtos)
         return allocate_slot_dtos
 
     def is_user_booking_slot_in_due_date(self, BookSlotDto):
@@ -78,7 +81,11 @@ class SlotStorageImplementation(StorageInterface):
         pass
 
     def validate_washing_machine_id(self, washing_machine_id: str) -> bool:
-        pass
+        is_washing_machine_id_valid = WashingMachine.objects.filter(washing_machine_id=washing_machine_id).exists()
+        if is_washing_machine_id_valid == True and washing_machine_id != "":
+            return True
+        else:
+            return False
 
     def get_added_washing_machine_dto(self, washing_machine_id):
         pass
@@ -86,7 +93,34 @@ class SlotStorageImplementation(StorageInterface):
     def washing_machine_details_dto(self, washing_machine_status):
         pass
 
-# from slot_booking.models.Slot import Slot, UserSlot
-        # user_slot_objs = UserSlot.objects.filter(slot_username=username).filter(user_booked_slot__slot_date=date)
-        # # print("*"*10, user_slot_objs, "*"*10)
-        # slot_objs = Slot.objects.filter(slot_id__in=user_slot_objs.user_slot_id)
+    def validate_day(self, day):
+        pass
+
+    def check_slot_exists_or_not(self, slot_id):
+        slot_exists = Slot.objects.filter(slot_id=slot_id).exists()
+        if slot_exists:
+            return True
+        else:
+            return False
+
+    def add_slot_to_washing_machine(self, each_slot, day):
+        added_slot_obj = Slot.objects.create(
+                slot_start_time=each_slot.slot_start_time,
+                slot_end_time=each_slot.slot_end_time,
+                slot_day=each_slot.slot_day,
+                washing_machine_id=each_slot.washing_machine_id
+        )
+        added_slot_dto = self.get_each_slot_dto(added_slot_obj)
+        return added_slot_dto
+
+    def update_slot_to_washing_machine(self, each_slot, day):
+        updated_slot_obj = Slot.objects.filter(id=each_slot.slot_id).update(slot_start_time=each_slot.slot_start_time,
+                slot_end_time=each_slot.slot_end_time)
+        updated_slot_dto = self.get_each_slot_dto(updated_slot_obj)
+        return updated_slot_dto
+
+    def validate_given_list_of_slots_dto(self, slots_dtos):
+        if slots_dtos == []:
+            return False
+        else:
+            return True

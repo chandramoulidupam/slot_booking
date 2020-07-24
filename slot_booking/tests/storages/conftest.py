@@ -17,25 +17,25 @@ def washing_machines():
 
 
 @pytest.fixture()
-def slots():
+def slots(washing_machines):
     lists_of_slots = [
         Slot(
             slot_day="SUNDAY",
             slot_start_time=time(6, 00, 00),
             slot_end_time=time(8, 00, 00),
-            washing_machine_id_id=1
+            washing_machine_id_id="washing_machine_1"
             ),
         Slot(
             slot_day="SUNDAY",
             slot_start_time=time(8, 00, 00),
             slot_end_time=time(10, 00, 00),
-            washing_machine_id_id=2
+            washing_machine_id_id="washing_machine_2"
             ),
         Slot(
             slot_day="SUNDAY",
             slot_start_time=time(10, 00, 00),
             slot_end_time=time(12, 00, 00),
-            washing_machine_id_id=1
+            washing_machine_id_id="washing_machine_1"
             ),
         ]
     Slot.objects.bulk_create(lists_of_slots)

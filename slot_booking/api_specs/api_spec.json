@@ -1,558 +1,565 @@
 {
-  "swagger": "2.0",
-  "host": "localhost:8000",
-  "basePath": "/api/slot_booking/",
-  "info": {
-    "version": "1.0.0",
-    "title": "SlotBooking API",
-    "description": "A simple API to learn how to write OpenAPI Specification"
-  },
-  "schemes": [
-    "http", "https"
-  ],
-  "consumes": [
-    "application/json"
-  ],
-  "produces": [
-    "application/json"
-  ],
-  "securityDefinitions": {
-    "oauth": {
-      "tokenUrl": "http://localhost:8080/token",
-      "flow": "password",
-      "scopes": {
-        "read": "read users",
-        "write": "create users",
-        "update": "update users",
-        "delete": "delete users",
-        "superuser": "super user permission"
-      },
-      "type": "oauth2"
-    }
-  },
-  "security": [],
-  "definitions": {
-    "slot": {
-      "type": "object",
-      "properties": {
-        "slot_id": {
-          "type": "string"
-        },
-        "slot_from_time": {
-          "type": "string",
-          "format": "datetime"
-        },
-        "slot_to_time": {
-          "type": "string",
-          "format": "datetime"
-        },
-        "slot_date": {
-          "type": "string",
-          "format": "date"
-        },
-        "slot_day": {
-          "type": "string",
-          "format":"day"
-        },
-        "washing_machine_id": {
-          "type": "string"
-        },
-        "slot_status": {
-          "type": "string",
-          "enum": [
-            "Avilable",
-            "Not_Avilable"]
-        }
-      }
-    },
-    "washing_machine": {
-      "type": "object",
-      "properties": {
-        "washing_machine_id": {
-          "type": "string"
-        },
-        "washing_machine_status": {
-          "type": "string",
-          "enum": [
-            "InActive",
-            "Active"
-          ]
-        }
-      }
-    }
-  },
-  "parameters": {
-    "BookingASlot": {
-      "name": "slotbooking",
-      "in": "body",
-      "schema": {
-        "type": "object",
-        "properties": {
-          "slot_time": {
-            "type": "string"
-          }
-        },
-        "required": ["slot_time"]
-      }
-    },
-    "AddingWashingMachine": {
-      "name": "addingwashingmachine",
-      "in": "body",
-      "schema": {
-        "type": "object",
-        "properties": {
-          "washing_machine_number": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "washing_machine_number"
-        ]
-      }
-    },
-    "AlterWashingMachine": {
-      "name": "add or update slots for washing machine",
-      "in": "body",
-      "schema": {
-        "type": "object",
-        "properties": {
-          "slot_from_time": {
-            "type": "string",
-            "format": "datetime"
-          },
-          "slot_to_time": {
-            "type": "string",
-            "format": "datetime"
-          },
-          "slot_date": {
-            "type": "string",
-            "format": "date"
-          }
-        }
-      }
-    },
-    "DateParameter": {
-      "name": "date",
-      "in": "path",
-      "required": true,
-      "description": "required slot for particular date",
-      "type": "string",
-      "format": "date"
-    },
-    "WashingMachineIdParameter": {
-      "name": "washing_machine_id",
-      "in": "path",
-      "required": true,
-      "description": "required slots for particular washing machine",
-      "type": "string"
-    },
-    "DayParameter": {
-      "name": "day",
-      "in": "path",
-      "required": true,
-      "description": "required slots for particular day",
-      "type": "string",
-      "enum": [
-            "SUNDAY",
-            "MONDAY",
-            "TUESDAY",
-            "WEDNESDAY",
-            "THURSDAY",
-            "FRIDAY",
-            "SATURDAY"
-          ]
-    }
-  },
-  "responses": {
-    "ListOfAvailableSlots": {
-      "description": "returns list of avilable slots",
-      "schema": {
-        "type": "object",
-        "properties": {
-          "total_slots_avilable": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "list_of_slots": {
-            "type": "array",
-            "items": {
-              "$ref": "#/definitions/slot"
-            }
-          }
-        }
-      }
-    },
-    "SlotBookingSuccess": {
-      "description": "Slot booking success",
-      "schema": {
-        "type": "object",
-        "properties": {
-          "slot_id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "slot_time": {
-            "type": "string",
-            "format": "time"
-          },
-          "slot_date": {
-            "type": "string",
-            "format": "date"
-          },
-          "washing_machine_id": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "BookingFailedDueToInvalidInputsResponse": {
-      "description": "Slot booking Failure due to invalid inputs Response",
-      "schema": {
-        "type": "object",
-        "properties": {
-          "response": {
-            "type": "string"
-          },
-          "http_status_code": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "res_status": {
-            "type": "string",
-            "enum": [
-              "INVALID_DATE",
-              "INVALID_TIME"
-            ]
-          }
-        },
-        "required": [
-          "response",
-          "http_status_code",
-          "res_status"
-        ]
-      }
-    },
-    "ListOfUpcomingSlots": {
-      "description": "list of upcoming slots",
-      "schema": {
-        "type": "object",
-        "properties": {
-          "slot_id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "washing_machine_id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "slot_date": {
-            "type": "string",
-            "format": "date"
-          },
-          "slot_time": {
-            "type": "string",
-            "format": "time"
-          }
-        }
-      }
-    },
-    "AddingWashingMachineFailedDueToInvalidInputsResponse": {
-      "description": "Adding washing machine Failure due to invalid inputs Response",
-      "schema": {
-        "type": "object",
-        "properties": {
-          "response": {
-            "type": "string"
-          },
-          "http_status_code": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "res_status": {
-            "type": "string",
-            "enum": [
-              "INVALID_WASHING_MACHINE_ID"
-            ]
-          }
-        },
-        "required": [
-          "response",
-          "http_status_code",
-          "res_status"
-        ]
-      }
-    },
-    "ListOfWashingMachinesDetails": {
-      "description": "list of washing machines details",
-      "schema": {
-        "type": "object",
-        "properties": {
-          "washing_machine_id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "washing_machine_status": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ListOfAllocatedSlots":{
-      "description": "list of washing machines details",
-      "schema": {
-        "type": "object",
-        "properties": {
-          "total_allocated_slots": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "allocated_slot_details": {
-            "type": "array",
-            "items": {
-              "$ref": "#/definitions/slot"
-            }
-          }
-        }
-      }
-    },
-    "ListOfPreviousSlots": {
-      "description": "list of upcoming slots",
-      "schema": {
-        "type": "object",
-        "properties": {
-         "total_missed_slots": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "previous_slot_details": {
-            "type": "array",
-            "items": {
-              "$ref": "#/definitions/slot"
-            }
-          }
-        }
-      }
-    }
-  },
-  "paths": {
-    "/slot/{date}/avilableslots/v1/": {
-      "get": {
-        "operationId": "get_list_of_avilable_slots",
-        "summary": "get list of avilable slots",
-        "description": "get list of avilable slots",
-        "security": [{
-          "oauth": ["read"]
-        }],
-        "parameters": [
-          {
-            "$ref": "#/parameters/DateParameter"
-          }
-        ],
-        "responses": {
-          "200": {
-            "$ref": "#/responses/ListOfAvailableSlots"
-          }
-        }
-      }
-    },
-    "/slot/bookingaslot/{date}/v1/": {
-      "post": {
-        "operationId": "book_a_slot",
-        "summary": "booking slot from avilable slots",
-        "description": "booking slot from avilable slots",
-        "security": [{
-          "oauth": ["read"]
-        }],
-        "parameters": [{
-            "$ref": "#/parameters/BookingASlot"
-          },
-          {
-            "$ref": "#/parameters/DateParameter"
-          }
-        ],
-        "responses": {
-          "201": {
-            "$ref": "#/responses/SlotBookingSuccess"
-          },
-          "404": {
-            "$ref": "#/responses/BookingFailedDueToInvalidInputsResponse"
-          }
-        }
-      }
-    },
-    "/slot/upcomingslots/{date}/v1/": {
-      "get": {
-        "operationId": "get_list_of_upcoming_slots",
-        "summary": "get list of upcoming slots",
-        "description": "get list of avilable slots",
-        "security": [{
-          "oauth": ["read"]
-        }],
-        "parameters": [{
-            "name": "offset",
-            "in": "query",
-            "description": "Some description for offset",
-            "type": "integer"
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "description": "Some description for limit",
-            "type": "integer"
-          },
-          {
-            "$ref": "#/parameters/DateParameter"
-          }
-        ],
-        "responses": {
-          "200": {
-            "$ref": "#/responses/ListOfUpcomingSlots"
-          },
-          "404": {
-            "description": "No Bokkings Yet"
-          }
-        }
-      }
-    },
-    "/addwashingmachine/v1/": {
-      "post": {
-        "operationId": "adding_washing_machine",
-        "summary": "adding a washing machine",
-        "description": "adding a washing machine",
-        "security": [{
-          "oauth": ["read"]
-        }],
-        "parameters": [{
-          "$ref": "#/parameters/AddingWashingMachine"
-        }],
-        "responses": {
-          "201": {
-            "$ref": "#/responses/SlotBookingSuccess"
-          },
-          "404": {
-            "$ref": "#/responses/AddingWashingMachineFailedDueToInvalidInputsResponse"
-          }
-        }
-      }
-    },
-    "/getwashingmachinesdetails/v1/": {
-      "get": {
-        "operationId": "get_list_of_washing_machine_details",
-        "summary": "get list of washing machine details",
-        "description": "get list of washing machine details",
-        "security": [{
-          "oauth": ["read"]
-        }],
-        "parameters": [{
-            "name": "offset",
-            "in": "query",
-            "description": "Some description for offset",
-            "type": "integer"
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "description": "Some description for limit",
-            "type": "integer"
-          }
-        ],
-        "responses": {
-          "200": {
-            "$ref": "#/responses/ListOfWashingMachinesDetails"
-          }
-        }
-      }
-    },
-    "/get_allocated_slots_for_washing_machine/{washing_machine_id}/{day}/v1/": {
-      "get": {
-        "operationId": "get_list_of_allocated_slots_for_washing_machine",
-        "summary": "get list of allocated slots for washing machine",
-        "description": "get list of allocated slots for washing machine",
-        "security": [{
-          "oauth": ["read"]
-        }],
-        "parameters": [{
-            "$ref": "#/parameters/DayParameter"
-          },
-          {
-            "$ref": "#/parameters/WashingMachineIdParameter"
-          },
-          {
-            "name": "offset",
-            "in": "query",
-            "description": "Some description for offset",
-            "type": "integer"
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "description": "Some description for limit",
-            "type": "integer"
-          }
-        ],
-        "responses": {
-          "200": {
-            "$ref":"#/responses/ListOfAllocatedSlots"
-          }
-        }
-      }
-    },
-    "/alter_washing_machine_slots/{washing_machine_id}/v1/": {
-      "post": {
-        "operationId": "alter_a_slot_for_washing_machine",
-        "summary": "alter a slot for waching machine",
-        "description": "alter a slot for washing machine",
-        "security": [{
-          "oauth": ["read"]
-        }],
-        "parameters": [
-          {
-            "$ref": "#/parameters/WashingMachineIdParameter"
-          },
-          {
-            "$ref": "#/parameters/AlterWashingMachine"
-          }
-        ],
-        "responses": {
-          "201":{
-            "$ref": "#/responses/ListOfAvailableSlots"
-          }
-        }
-      }
-    },
-    "/prevoiusslots/{date}/v1/": {
-      "get": {
-        "operationId": "get_list_of_previous_slots",
-        "summary": "get list of previous slots",
-        "description": "get list of previous slots",
-        "security": [{
-          "oauth": ["read"]
-        }],
-        "parameters": [{
-            "name": "offset",
-            "in": "query",
-            "description": "Some description for offset",
-            "type": "integer"
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "description": "Some description for limit",
-            "type": "integer"
-          },
-          {
-            "$ref": "#/parameters/DateParameter"
-          }
-        ],
-        "responses": {
-          "200": {
-            "$ref": "#/responses/ListOfPreviousSlots"
-          },
-          "404": {
-            "description": "No Bokkings Yet"
-          }
-        }
-      }
-    }
-  }
+	"swagger": "2.0",
+	"host": "localhost:8000",
+	"basePath": "/api/slot_booking/",
+	"info": {
+		"version": "1.0.0",
+		"title": "SlotBooking API",
+		"description": "A simple API to learn how to write OpenAPI Specification"
+	},
+	"schemes": [
+		"http", "https"
+	],
+	"consumes": [
+		"application/json"
+	],
+	"produces": [
+		"application/json"
+	],
+	"securityDefinitions": {
+		"oauth": {
+			"tokenUrl": "http://localhost:8080/token",
+			"flow": "password",
+			"scopes": {
+				"read": "read users",
+				"write": "create users",
+				"update": "update users",
+				"delete": "delete users",
+				"superuser": "super user permission"
+			},
+			"type": "oauth2"
+		}
+	},
+	"security": [],
+	"definitions": {
+		"slot": {
+			"type": "object",
+			"properties": {
+				"slot_id": {
+					"type": "string"
+				},
+				"slot_start_time": {
+					"type": "string",
+					"format": "datetime"
+				},
+				"slot_end_time": {
+					"type": "string",
+					"format": "datetime"
+				},
+				"slot_day": {
+					"type": "string",
+					"format": "day"
+				},
+				"washing_machine_id": {
+					"type": "string"
+				}
+			}
+		},
+		"washing_machine": {
+			"type": "object",
+			"properties": {
+				"washing_machine_id": {
+					"type": "string"
+				},
+				"washing_machine_status": {
+					"type": "string",
+					"enum": [
+						"InActive",
+						"Active"
+					]
+				}
+			}
+		}
+	},
+	"parameters": {
+		"BookingASlot": {
+			"name": "slotbooking",
+			"in": "body",
+			"schema": {
+				"type": "object",
+				"properties": {
+					"slot_time": {
+						"type": "string"
+					}
+				},
+				"required": ["slot_time"]
+			}
+		},
+		"AddingWashingMachine": {
+			"name": "addingwashingmachine",
+			"in": "body",
+			"schema": {
+				"type": "object",
+				"properties": {
+					"washing_machine_number": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"washing_machine_number"
+				]
+			}
+		},
+		"AlterWashingMachine": {
+			"name": "AlterWashingMachine",
+			"in": "body",
+			"schema": {
+				"type": "object",
+				"properties": {
+					"slot_from_time": {
+						"type": "string",
+						"format": "datetime"
+					},
+					"slot_to_time": {
+						"type": "string",
+						"format": "datetime"
+					},
+					"slot_day": {
+						"type": "string",
+						"enum": [
+							"SUNDAY",
+							"MONDAY",
+							"TUESDAY",
+							"WEDNESDAY",
+							"THURSDAY",
+							"FRIDAY",
+							"SATURDAY"
+						]
+					}
+				}
+			}
+		},
+		"DateParameter": {
+			"name": "date",
+			"in": "path",
+			"required": true,
+			"description": "required slot for particular date",
+			"type": "string",
+			"format": "date"
+		},
+		"WashingMachineNameParameter": {
+			"name": "washing_machine_name",
+			"in": "path",
+			"required": true,
+			"description": "required slots for particular washing machine",
+			"type": "string"
+		},
+		"DayParameter": {
+			"name": "day",
+			"in": "path",
+			"required": true,
+			"description": "required slots for particular day",
+			"type": "string",
+			"enum": [
+				"SUNDAY",
+				"MONDAY",
+				"TUESDAY",
+				"WEDNESDAY",
+				"THURSDAY",
+				"FRIDAY",
+				"SATURDAY"
+			]
+		},
+		"UsernameParameter": {
+			"name": "username",
+			"in": "path",
+			"required": true,
+			"description": "required slot for particular user",
+			"type": "string"
+		}
+	},
+	"responses": {
+		"ListOfAvailableSlots": {
+			"description": "returns list of avilable slots",
+			"schema": {
+				"type": "object",
+				"properties": {
+					"total_slots_avilable": {
+						"type": "integer",
+						"format": "int64"
+					},
+					"list_of_slots": {
+						"type": "array",
+						"items": {
+							"$ref": "#/definitions/slot"
+						}
+					}
+				}
+			}
+		},
+		"SlotBookingSuccess": {
+			"description": "Slot booking success",
+			"schema": {
+				"type": "object",
+				"properties": {
+					"slot_id": {
+						"type": "integer",
+						"format": "int64"
+					},
+					"slot_time": {
+						"type": "string",
+						"format": "time"
+					},
+					"slot_date": {
+						"type": "string",
+						"format": "date"
+					},
+					"washing_machine_id": {
+						"type": "string"
+					}
+				}
+			}
+		},
+		"BookingFailedDueToInvalidInputsResponse": {
+			"description": "Slot booking Failure due to invalid inputs Response",
+			"schema": {
+				"type": "object",
+				"properties": {
+					"response": {
+						"type": "string"
+					},
+					"http_status_code": {
+						"type": "integer",
+						"format": "int64"
+					},
+					"res_status": {
+						"type": "string",
+						"enum": [
+							"INVALID_DATE",
+							"INVALID_TIME"
+						]
+					}
+				},
+				"required": [
+					"response",
+					"http_status_code",
+					"res_status"
+				]
+			}
+		},
+		"ListOfUpcomingSlots": {
+			"description": "list of upcoming slots",
+			"schema": {
+				"type": "object",
+				"properties": {
+					"slot_id": {
+						"type": "integer",
+						"format": "int64"
+					},
+					"washing_machine_id": {
+						"type": "integer",
+						"format": "int64"
+					},
+					"slot_date": {
+						"type": "string",
+						"format": "date"
+					},
+					"slot_start_time": {
+						"type": "string",
+						"format": "time"
+					},
+					"slot_end_time": {
+						"type": "string",
+						"format": "time"
+					}
+				}
+			}
+		},
+		"AddingWashingMachineFailedDueToInvalidInputsResponse": {
+			"description": "Adding washing machine Failure due to invalid inputs Response",
+			"schema": {
+				"type": "object",
+				"properties": {
+					"response": {
+						"type": "string"
+					},
+					"http_status_code": {
+						"type": "integer",
+						"format": "int64"
+					},
+					"res_status": {
+						"type": "string",
+						"enum": [
+							"INVALID_WASHING_MACHINE_ID"
+						]
+					}
+				},
+				"required": [
+					"response",
+					"http_status_code",
+					"res_status"
+				]
+			}
+		},
+		"ListOfWashingMachinesDetails": {
+			"description": "list of washing machines details",
+			"schema": {
+				"type": "object",
+				"properties": {
+					"washing_machine_id": {
+						"type": "integer",
+						"format": "int64"
+					},
+					"washing_machine_status": {
+						"type": "string"
+					}
+				}
+			}
+		},
+		"ListOfAllocatedSlots": {
+			"description": "list of washing machines details",
+			"schema": {
+				"type": "object",
+				"properties": {
+					"total_allocated_slots": {
+						"type": "integer",
+						"format": "int64"
+					},
+					"allocated_slot_details": {
+						"type": "array",
+						"items": {
+							"$ref": "#/definitions/slot"
+						}
+					}
+				}
+			}
+		},
+		"ListOfPreviousSlots": {
+			"description": "list of upcoming slots",
+			"schema": {
+				"type": "object",
+				"properties": {
+					"total_missed_slots": {
+						"type": "integer",
+						"format": "int64"
+					},
+					"previous_slot_details": {
+						"type": "array",
+						"items": {
+							"$ref": "#/definitions/slot"
+						}
+					}
+				}
+			}
+		}
+	},
+	"paths": {
+		"/slot/avilable_slots/{date}/v1/": {
+			"get": {
+				"operationId": "get_list_of_avilable_slots",
+				"summary": "get list of avilable slots",
+				"description": "get list of avilable slots",
+				"security": [{
+					"oauth": ["read"]
+				}],
+				"parameters": [{
+					"$ref": "#/parameters/DateParameter"
+				}],
+				"responses": {
+					"200": {
+						"$ref": "#/responses/ListOfAvailableSlots"
+					}
+				}
+			}
+		},
+		"/slot/booking_a_slot/{date}/v1/": {
+			"post": {
+				"operationId": "book_a_slot",
+				"summary": "booking slot from avilable slots",
+				"description": "booking slot from avilable slots",
+				"security": [{
+					"oauth": ["read"]
+				}],
+				"parameters": [{
+						"$ref": "#/parameters/BookingASlot"
+					},
+					{
+						"$ref": "#/parameters/DateParameter"
+					}
+				],
+				"responses": {
+					"201": {
+						"$ref": "#/responses/SlotBookingSuccess"
+					},
+					"404": {
+						"$ref": "#/responses/BookingFailedDueToInvalidInputsResponse"
+					}
+				}
+			}
+		},
+		"/slot/upcoming_slots/{date}/v1/": {
+			"get": {
+				"operationId": "get_list_of_upcoming_slots",
+				"summary": "get list of upcoming slots",
+				"description": "get list of avilable slots",
+				"security": [{
+					"oauth": ["read"]
+				}],
+				"parameters": [{
+						"name": "offset",
+						"in": "query",
+						"description": "Some description for offset",
+						"type": "integer"
+					},
+					{
+						"name": "limit",
+						"in": "query",
+						"description": "Some description for limit",
+						"type": "integer"
+					},
+					{
+						"$ref": "#/parameters/DateParameter"
+					}
+				],
+				"responses": {
+					"200": {
+						"$ref": "#/responses/ListOfUpcomingSlots"
+					},
+					"404": {
+						"description": "No Bokkings Yet"
+					}
+				}
+			}
+		},
+		"/admin/add_washing_machine/v1/": {
+			"post": {
+				"operationId": "adding_washing_machine",
+				"summary": "adding a washing machine",
+				"description": "adding a washing machine",
+				"security": [{
+					"oauth": ["read"]
+				}],
+				"parameters": [{
+					"$ref": "#/parameters/AddingWashingMachine"
+				}],
+				"responses": {
+					"201": {
+						"$ref": "#/responses/SlotBookingSuccess"
+					},
+					"404": {
+						"$ref": "#/responses/AddingWashingMachineFailedDueToInvalidInputsResponse"
+					}
+				}
+			}
+		},
+		"/admin/get_washing_machines_details/v1/": {
+			"get": {
+				"operationId": "get_list_of_washing_machine_details",
+				"summary": "get list of washing machine details",
+				"description": "get list of washing machine details",
+				"security": [{
+					"oauth": ["read"]
+				}],
+				"parameters": [{
+						"name": "offset",
+						"in": "query",
+						"description": "Some description for offset",
+						"type": "integer"
+					},
+					{
+						"name": "limit",
+						"in": "query",
+						"description": "Some description for limit",
+						"type": "integer"
+					}
+				],
+				"responses": {
+					"200": {
+						"$ref": "#/responses/ListOfWashingMachinesDetails"
+					}
+				}
+			}
+		},
+		"/admin/get_allocated_slots_for_washing_machine/{washing_machine_name}/{day}/v1/": {
+			"get": {
+				"operationId": "get_list_of_allocated_slots_for_washing_machine",
+				"summary": "get list of allocated slots for washing machine",
+				"description": "get list of allocated slots for washing machine",
+				"security": [{
+					"oauth": ["read"]
+				}],
+				"parameters": [{
+						"$ref": "#/parameters/DayParameter"
+					},
+					{
+						"name": "offset",
+						"in": "query",
+						"description": "Some description for offset",
+						"type": "integer"
+					},
+					{
+						"name": "limit",
+						"in": "query",
+						"description": "Some description for limit",
+						"type": "integer"
+					},
+					{
+						"$ref": "#/parameters/WashingMachineNameParameter"
+					}
+				],
+				"responses": {
+					"200": {
+						"$ref": "#/responses/ListOfAllocatedSlots"
+					}
+				}
+			}
+		},
+		"/admin/add_update_washing_machine_slots/{washing_machine_name}/{day}/v1/": {
+			"post": {
+				"operationId": "alter_a_slot_for_washing_machine",
+				"summary": "alter a slot for waching machine",
+				"description": "alter a slot for washing machine",
+				"security": [{
+					"oauth": ["read"]
+				}],
+				"parameters": [
+					{
+						"$ref": "#/parameters/WashingMachineNameParameter"
+					},
+					{
+						"$ref": "#/parameters/DayParameter"
+					},
+					{
+						"$ref": "#/parameters/AlterWashingMachine"
+					}
+				],
+				"responses": {
+					"201": {
+						"$ref": "#/responses/ListOfAvailableSlots"
+					}
+				}
+			}
+		},
+		"/slot/previous_slots/v1/": {
+			"get": {
+				"operationId": "get_list_of_previous_slots",
+				"summary": "get list of previous slots",
+				"description": "get list of previous slots",
+				"security": [{
+					"oauth": ["read"]
+				}],
+				"parameters": [{
+						"name": "offset",
+						"in": "query",
+						"description": "Some description for offset",
+						"type": "integer"
+					},
+					{
+						"name": "limit",
+						"in": "query",
+						"description": "Some description for limit",
+						"type": "integer"
+					}
+				],
+				"responses": {
+					"200": {
+						"$ref": "#/responses/ListOfPreviousSlots"
+					},
+					"404": {
+						"description": "No Bokkings Yet"
+					}
+				}
+			}
+		}
+	}
 }

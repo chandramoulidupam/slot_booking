@@ -212,6 +212,11 @@
       "post": {
         "operationId": "user_login",
         "summary": "login page for users",
+        "security": [
+          {
+            "oauth" : []
+          }
+        ],
         "parameters": [{
           "$ref": "#/parameters/ValidateUserCredentials"
         }],
@@ -232,6 +237,9 @@
       "post": {
         "operationId": "user_signup",
         "summary": "sign-up page for users",
+        "security": [{
+          "oauth" : []
+        }],
         "parameters": [{
           "$ref": "#/parameters/ValidateUserInputs"
         }],

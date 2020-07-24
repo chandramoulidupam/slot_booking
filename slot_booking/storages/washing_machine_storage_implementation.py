@@ -64,3 +64,15 @@ class WashingMachineStorageImplementation(StorageInterface):
 
     def validate_day(self, day):
         pass
+
+    def check_slot_exists_or_not(self, slot_id):
+        pass
+
+    def add_slot_to_washing_machine(self, each_slot, day):
+        pass
+
+    def update_slot_to_washing_machine(self, each_slot, day):
+        pass
+
+    def validate_given_list_of_slots_dto(self, slots_dtos):
+        pass

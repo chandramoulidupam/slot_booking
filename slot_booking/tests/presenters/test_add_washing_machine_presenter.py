@@ -23,7 +23,7 @@ def test_add_washing_machine_with_invalid_washing_number_raises_exception(snapsh
 def test_add_washing_machine_with_valid_washing_id_gives_returns_added_machine_details(snapshot):
     presenter = AddWashingmachinePresenterImplementation()
     washing_machine_dto = WashingMachineDto(
-        washing_machine_id=1,
+        washing_machine_id="washing_machine_1",
         washing_machine_status="ACTIVE"
     )
     excepted_response = {'washing_machine_id': 1, 'washing_machine_status': 'ACTIVE'}

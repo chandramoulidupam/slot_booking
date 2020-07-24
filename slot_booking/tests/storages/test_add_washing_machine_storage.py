@@ -2,22 +2,24 @@ import pytest
 from slot_booking.storages.washing_machine_storage_implementation \
         import WashingMachineStorageImplementation
 from slot_booking.dtos.dtos import WashingMachineDto
+from slot_booking.tests.factories.models import WashingMachineFactory
 
 
 @pytest.mark.django_db
 class TestAddedWashingmachineStorager:
     def test_adding_washing_machine(self):
-        new_washing_machine_id = "washing_machine_2"
-        new_washing_machine_id = new_washing_machine_id
-        washing_machine_status = "ACTIVE"
+        # new_washing_machine_id = "washing_machine_2"
+        # new_washing_machine_id = new_washing_machine_id
+        washing_machine = WashingMachineFactory()
+        # washing_machine_status = "ACTIVE"
         expected_washing_machine_dto = WashingMachineDto(
-                washing_machine_id=new_washing_machine_id,
-                washing_machine_status=washing_machine_status
+                washing_machine_id=washing_machine.washing_machine_id,
+                washing_machine_status=washing_machine.washing_machine_status
             )
         storage = WashingMachineStorageImplementation()
         # storage.validate_washing_machine_number.return_value = True
         response_user_dto = storage.get_added_washing_machine_dto(
-                washing_machine_id=new_washing_machine_id
+                washing_machine_id=washing_machine.washing_machine_id
             )
         # Assert
         assert response_user_dto == expected_washing_machine_dto

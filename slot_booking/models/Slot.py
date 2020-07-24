@@ -3,7 +3,7 @@ from slot_booking.constants.enums import WashingMachineStatus, SlotDays, BookedS
 
 
 class WashingMachine(models.Model):
-    washing_machine_id = models.CharField(max_length=30)
+    washing_machine_id = models.CharField(max_length=30, primary_key=True)
     washing_machine_status = models.CharField(max_length=100, choices=WashingMachineStatus.get_list_of_tuples(), default="ACTIVE")
 
 

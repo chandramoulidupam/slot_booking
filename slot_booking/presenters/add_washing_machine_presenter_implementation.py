@@ -58,3 +58,9 @@ class AddWashingmachinePresenterImplementation(PresenterInterface):
 
     def raise_exception_for_user_is_not_admin(self):
         pass
+
+    def alter_slots_for_washing_machine_returns_slots_details(self, list_of_slot_dtos):
+        pass
+
+    def raise_exception_for_invalid_inputs(self):
+        pass

@@ -1,3 +1,4 @@
+from slot_booking.constants.exception_messages import USER_IS_NOT_ADMIN
 from slot_booking.interactors.presenters.presenter_interface import PresenterInterface
 import json
 
@@ -10,17 +11,15 @@ class WashingMachineDetailsPresenterImplementation(PresenterInterface):
         for each_washing_machine_detail in washing_machine_details_dto:
             each_washing_machine_details = self._get_each_washing_machine_details(each_washing_machine_detail)
             list_of_washing_machine_details.append(each_washing_machine_details)
-        count_of_avilable_slots = len(list_of_washing_machine_details)
         washing_machine_details_response = {
-            "list_of_previous_slots": list_of_washing_machine_details,
-            "number_of_slots_used_in_previous": count_of_avilable_slots
+            "list_of_washing_machine_details": list_of_washing_machine_details,
         }
         return response.HttpResponse(json.dumps(washing_machine_details_response), status=200)
 
     def _get_each_washing_machine_details(self, each_washing_machine_detail):
         each_washing_machine_details = {
                 "washing_machine_id": each_washing_machine_detail.washing_machine_id,
-                "slot_end_time": each_washing_machine_detail.washing_machine_status,
+                "washing_machine_status": each_washing_machine_detail.washing_machine_status,
             }
         return each_washing_machine_details
 
@@ -52,4 +51,26 @@ class WashingMachineDetailsPresenterImplementation(PresenterInterface):
         pass
 
     def raise_exception_for_no_slots_avilable_to_user(self):
+        pass
+
+    def raise_exception_for_invalid_day(self):
+        pass
+
+    def get_allocated_slots_for_washing_machine(self, list_of_slot_dtos):
+        pass
+
+    def raise_exception_for_user_is_not_admin(self):
+        response_object = response.HttpResponse(json.dumps(
+            {
+                "response": USER_IS_NOT_ADMIN[0],
+                "http_status_code": USER_IS_NOT_ADMIN[1],
+                "res_status": 404
+            }
+        ), status=404)
+        return response_object
+
+    def alter_slots_for_washing_machine_returns_slots_details(self, list_of_slot_dtos):
+        pass
+
+    def raise_exception_for_invalid_inputs(self):
         pass
